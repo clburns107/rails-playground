@@ -1,3 +1,3 @@
 class Play < ActiveRecord::Base
-  has_one :theater
+  belongs_to :theater
 end
