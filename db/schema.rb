@@ -11,10 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160323164434) do
+ActiveRecord::Schema.define(version: 20160323181610) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "award_categories", force: :cascade do |t|
+    t.string   "award_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "ballots", force: :cascade do |t|
+    t.integer  "award_category_id"
+    t.string   "nominee"
+    t.string   "voter_token"
+    t.boolean  "online_submission"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   default: 0, null: false
@@ -31,6 +46,18 @@ ActiveRecord::Schema.define(version: 20160323164434) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+
+  create_table "nominations", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "award_category_id"
+    t.integer  "play_id"
+    t.string   "nominee"
+    t.string   "role"
+    t.boolean  "open"
+    t.boolean  "approved"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
 
   create_table "plays", force: :cascade do |t|
     t.string   "title"
@@ -64,5 +91,20 @@ ActiveRecord::Schema.define(version: 20160323164434) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "viewings", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "play_id"
+    t.date     "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "votes", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "ballot_item_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
 
 end
